@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kovil Donation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body{font-family:Arial;background:#f4f4f4;padding:15px}
+.container{max-width:520px;margin:auto;background:#fff;padding:20px;border-radius:12px;text-align:center}
+input{width:100%;padding:10px;margin:6px 0}
+button{width:100%;padding:12px;margin-top:8px;background:#8B0000;color:#fff;border:none;border-radius:6px}
+.qr{margin:10px 0}
+.small{color:#555;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<img src="A_logo_for_"Kovil_Donation"_features_an_ornate_Hin.png" width="220">
+<h2>Kovil Donation</h2>
+
+<div class="qr">
+<!-- Save your uploaded PhonePe QR image in the same folder with this exact name -->
+<img src="phonepe_qr.png" width="260" alt="Scan & Pay QR">
+<div class="small">Scan & Pay (UPI ID: 9003698852@ybl)</div>
+</div>
+
+<label>பெயர்</label>
+<input id="name">
+
+<label>ஊர்</label>
+<input id="place">
+
+<label>Amount</label>
+<input id="amount" type="number">
+
+<label>UPI ID</label>
+<input id="upi" value="9003698852@ybl">
+
+<button onclick="payUPI()">UPI App Open</button>
+<button onclick="downloadPDF()">Receipt PDF Download</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script>
+let receiptNo = "RC" + Math.floor(Math.random()*900000+100000);
+
+function payUPI(){
+ let u=document.getElementById("upi").value;
+ let a=document.getElementById("amount").value||0;
+ location.href=`upi://pay?pa=${u}&pn=KovilDonation&am=${a}&cu=INR`;
+}
+
+function downloadPDF(){
+ const { jsPDF } = window.jspdf;
+ let name=document.getElementById("name").value||"-";
+ let place=document.getElementById("place").value||"-";
+ let amount=document.getElementById("amount").value||"0";
+
+ const doc=new jsPDF();
+ doc.text("Kovil Donation Receipt",20,20);
+ doc.text("Receipt No: "+receiptNo,20,30);
+ doc.text("Name: "+name,20,40);
+ doc.text("Place: "+place,20,50);
+ doc.text("Amount: Rs."+amount,20,60);
+ doc.text("UPI: 9003698852@ybl",20,70);
+ doc.save("Kovil_Donation_Receipt.pdf");
+ document.getElementById("msg").innerText="Receipt Generated: "+receiptNo;
+}
+</script>
+
+</body>
+</html>
